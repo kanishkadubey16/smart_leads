@@ -8,7 +8,7 @@ export const formatDate = (dateString: string): string => {
       day: 'numeric',
       year: 'numeric',
     });
-  } catch (e) {
+  } catch {
     return dateString;
   }
 };

@@ -34,7 +34,7 @@ export const Login: React.FC = () => {
     try {
       await login(values.email, values.password);
       navigate('/');
-    } catch (err) {
+    } catch {
       // Error handled by AuthContext
     }
   };

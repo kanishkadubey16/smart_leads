@@ -74,7 +74,7 @@ if (!USE_STANDALONE_MOCK) {
       
       // Recursively map _id to id to match frontend types
       if (data && data.leads && Array.isArray(data.leads)) {
-        data.leads = data.leads.map((lead: any) => ({ ...lead, id: lead._id || lead.id }));
+        data.leads = data.leads.map((lead: { _id?: string; id?: string }) => ({ ...lead, id: lead._id || lead.id }));
       }
       if (data && data.user) {
         data.user.id = data.user._id || data.user.id;
@@ -128,6 +128,7 @@ if (USE_STANDALONE_MOCK) {
         });
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _, ...userWithoutPassword } = user;
       setCurrentUser(userWithoutPassword);
       
@@ -171,6 +172,7 @@ if (USE_STANDALONE_MOCK) {
       users.push(newUser);
       setUsers(users);
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _, ...userWithoutPassword } = newUser;
       setCurrentUser(userWithoutPassword);
 

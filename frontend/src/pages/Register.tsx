@@ -38,7 +38,7 @@ export const Register: React.FC = () => {
     try {
       await registerUser(values.name, values.email, values.password, values.role);
       navigate('/');
-    } catch (err) {
+    } catch {
       // Error handled by AuthContext
     }
   };
