@@ -51,13 +51,7 @@ Smart_Leads/
 
 ### 1. Environment Variables
 Create a `.env` file in the `backend/` directory:
-```env
-PORT=8080
-MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/smart-leads?retryWrites=true&w=majority
-JWT_SECRET=super_secret_jwt_key
-JWT_EXPIRES_IN=7d
-NODE_ENV=development
-```
+
 
 ### 2. Backend Initialization
 ```bash
