@@ -52,12 +52,14 @@ const setCurrentUser = (user: User | null) => {
 };
 
 // SET TO true TO RUN STANDALONE IN THE BROWSER (persisting in localStorage)
-// SET TO false TO CALL THE ACTUAL EXPRESS SERVER RUNNING ON http://localhost:5050
+// SET TO false TO CALL THE ACTUAL EXPRESS SERVER RUNNING ON http://localhost:8080
 const USE_STANDALONE_MOCK = false;
 
-// Create Axios Instance
+// Create Axios Instance — uses VITE_API_URL env var, falls back to localhost for development
 export const api = axios.create({
-  baseURL: USE_STANDALONE_MOCK ? '/api' : 'http://localhost:8080/api',
+  baseURL: USE_STANDALONE_MOCK
+    ? '/api'
+    : (import.meta.env.VITE_API_URL || 'http://localhost:8080') + '/api',
   headers: {
     'Content-Type': 'application/json',
   },
