@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
-import type { Lead, DashboardStats } from '../types';
+import type { Lead, DashboardStats, LeadStatus, LeadSource } from '../types';
 import { formatDate } from '../utils/date';
 import { StatsCard } from '../components/StatsCard';
 import { LeadModal } from '../components/LeadModal';
@@ -87,12 +87,11 @@ export const Dashboard: React.FC = () => {
   };
 
   // ─── Add / Edit Submit ────────────────────────────────────────────────────────
-  const handleModalSubmit = async (values: { name: string; email: string; status: any; source: any }) => {
+  const handleModalSubmit = async (values: { name: string; email: string; status: LeadStatus; source: LeadSource }) => {
     setModalLoading(true);
     try {
       if (selectedLead) {
-        // @ts-ignore
-        await api.put(`/leads/${selectedLead.id || selectedLead._id}`, values);
+        await api.put(`/leads/${selectedLead.id}`, values);
         toast.success('Lead updated successfully!');
       } else {
         await api.post('/leads', values);

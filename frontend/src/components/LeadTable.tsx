@@ -158,8 +158,7 @@ export const LeadTable: React.FC<LeadTableProps> = ({
                     isAdmin={isAdmin}
                     onView={() => onView(lead)}
                     onEdit={() => onEdit(lead)}
-                    // @ts-ignore - handle both id and _id
-                    onDelete={() => onDelete(lead.id || lead._id)}
+                    onDelete={() => onDelete(lead.id)}
                   />
                 </td>
               </tr>
