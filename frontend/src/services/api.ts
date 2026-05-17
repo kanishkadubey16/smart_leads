@@ -53,15 +53,37 @@ const setCurrentUser = (user: User | null) => {
 
 // SET TO true TO RUN STANDALONE IN THE BROWSER (persisting in localStorage)
 // SET TO false TO CALL THE ACTUAL EXPRESS SERVER RUNNING ON http://localhost:5050
-const USE_STANDALONE_MOCK = true;
+const USE_STANDALONE_MOCK = false;
 
 // Create Axios Instance
 export const api = axios.create({
-  baseURL: USE_STANDALONE_MOCK ? '/api' : 'http://localhost:5050/api',
+  baseURL: USE_STANDALONE_MOCK ? '/api' : 'http://localhost:8080/api',
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+// Intercept responses from the real backend to match the structure the frontend expects
+if (!USE_STANDALONE_MOCK) {
+  api.interceptors.response.use((response) => {
+    // Our backend wraps success data in { success: true, data: { ... } }
+    if (response.data && response.data.success !== undefined && response.data.data !== undefined) {
+      const data = response.data.data;
+      
+      // Recursively map _id to id to match frontend types
+      if (data && data.leads && Array.isArray(data.leads)) {
+        data.leads = data.leads.map((lead: any) => ({ ...lead, id: lead._id || lead.id }));
+      }
+      if (data && data.user) {
+        data.user.id = data.user._id || data.user.id;
+      }
+
+      // Re-assign the data property so the frontend components don't have to change
+      response.data = data;
+    }
+    return response;
+  });
+}
 
 // Configure Custom Axios Adapter if standalone mode is enabled
 if (USE_STANDALONE_MOCK) {
@@ -218,7 +240,7 @@ if (USE_STANDALONE_MOCK) {
       }
 
       // Status filter
-      if (status && status !== 'All Statuses') {
+      if (status && status !== 'All Status') {
         filteredLeads = filteredLeads.filter((l) => l.status === status);
       }
 

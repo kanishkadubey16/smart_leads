@@ -38,11 +38,9 @@ export const Navbar: React.FC = () => {
           onClick={() => setDropdownOpen(!dropdownOpen)}
           className="flex items-center gap-2 p-1.5 rounded-full hover:bg-slate-50 transition-all duration-200 outline-none cursor-pointer group"
         >
-          <img
-            src={user.avatarUrl}
-            alt={user.name}
-            className="w-9 h-9 rounded-full object-cover border-2 border-transparent group-hover:border-blue-500/20 transition-all duration-200"
-          />
+          <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-lg border-2 border-transparent group-hover:border-blue-500/20 transition-all duration-200">
+            👩‍💻
+          </div>
           <ChevronDown className={`w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
         </button>
 

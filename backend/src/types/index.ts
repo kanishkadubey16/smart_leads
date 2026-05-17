@@ -1,8 +1,8 @@
 // ─── Enums ──────────────────────────────────────────────────────────────────
 
 export enum Role {
-  ADMIN = 'admin',
-  SALES = 'sales',
+  ADMIN = 'ADMIN',
+  SALES = 'SALES_USER',
 }
 
 export enum LeadStatus {
@@ -14,7 +14,9 @@ export enum LeadStatus {
 
 export enum LeadSource {
   WEBSITE = 'Website',
-  INSTAGRAM = 'Instagram',
+  EMAIL_CAMPAIGN = 'Email Campaign',
+  COLD_CALL = 'Cold Call',
+  LINKEDIN = 'LinkedIn',
   REFERRAL = 'Referral',
 }
 

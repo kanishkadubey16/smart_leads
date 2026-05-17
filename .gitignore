@@ -1,0 +1,93 @@
+# ─── Environment Files ──────────────────────────────────────────────────────
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+**/.env
+**/.env.local
+**/.env.development
+**/.env.production
+**/.env.test
+# Keep .env.example files (safe templates)
+!**/.env.example
+
+# ─── Dependencies ────────────────────────────────────────────────────────────
+node_modules/
+**/node_modules/
+
+# ─── Build / Dist Output ─────────────────────────────────────────────────────
+dist/
+build/
+**/dist/
+**/build/
+out/
+.output/
+
+# ─── TypeScript Cache ─────────────────────────────────────────────────────────
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ─── OS Files ─────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ─── IDE / Editor ─────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+.project
+.classpath
+
+# ─── Vite / Frontend Cache ────────────────────────────────────────────────────
+.vite/
+**/.vite/
+vite.config.ts.timestamp-*
+
+# ─── Package Manager Locks (optional – keep if you want reproducible builds) ──
+# Uncomment to ignore lock files:
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ─── Test Coverage ────────────────────────────────────────────────────────────
+coverage/
+**/coverage/
+*.lcov
+
+# ─── Docker ───────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ─── Misc ─────────────────────────────────────────────────────────────────────
+*.pem
+*.key
+*.cert
+*.crt
+.cache/
+tmp/
+temp/
+
+# ─── Test/Debug Scripts (don't ship these) ───────────────────────────────────
+backend/test-*.ts
+backend/test-*.js

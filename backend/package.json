@@ -4,9 +4,9 @@
   "description": "Premium Express, TypeScript, Zod, and JWT backend for Smart Leads CRM",
   "main": "dist/app.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "start": "node dist/app.js"
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

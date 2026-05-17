@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { api } from '../services/api';
 import type { Lead, DashboardStats } from '../types';
 import { formatDate } from '../utils/date';
-import StatsCard from '../components/StatsCard';
-import LeadModal from '../components/LeadModal';
+import { StatsCard } from '../components/StatsCard';
+import { LeadModal } from '../components/LeadModal';
+import { ViewLeadModal } from '../components/ViewLeadModal';
 import { 
   Search, 
   Download, 
@@ -14,11 +15,15 @@ import {
   Edit3, 
   Trash2, 
   RefreshCw,
-  FolderOpen
+  FolderOpen,
+  Eye
 } from 'lucide-react';
 
 
+import { useAuth } from '../hooks/useAuth';
+
 export const Dashboard: React.FC = () => {
+  const { user } = useAuth();
   // Leads & Stats state
   const [leads, setLeads] = useState<Lead[]>([]);
   const [stats, setStats] = useState<DashboardStats>({
@@ -30,7 +35,7 @@ export const Dashboard: React.FC = () => {
 
   // Filter & Search states
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All Statuses');
+  const [statusFilter, setStatusFilter] = useState('All Status');
   const [sourceFilter, setSourceFilter] = useState('All Sources');
   const [sortBy, setSortBy] = useState('Newest');
 
@@ -44,7 +49,9 @@ export const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actionMenuOpenLeadId, setActionMenuOpenLeadId] = useState<string | null>(null);
+  // Modals state
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [modalLoading, setModalLoading] = useState(false);
 
@@ -122,7 +129,8 @@ export const Dashboard: React.FC = () => {
     try {
       if (selectedLead) {
         // Edit lead
-        await api.put(`/leads/${selectedLead.id}`, values);
+        // @ts-ignore - Handle stale state from HMR
+        await api.put(`/leads/${selectedLead.id || selectedLead._id}`, values);
       } else {
         // Add lead
         await api.post('/leads', values);
@@ -235,7 +243,7 @@ export const Dashboard: React.FC = () => {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-4 py-3 bg-white border border-slate-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 rounded-xl text-sm text-slate-800 font-semibold transition-all duration-200 outline-none cursor-pointer"
             >
-              <option value="All Statuses">All Statuses</option>
+              <option value="All Status">All Status</option>
               <option value="New">New</option>
               <option value="Qualified">Qualified</option>
               <option value="Contacted">Contacted</option>
@@ -269,14 +277,16 @@ export const Dashboard: React.FC = () => {
 
           {/* Action buttons */}
           <div className="flex items-center gap-3">
-            <button
-              onClick={handleExport}
-              disabled={leads.length === 0}
-              className="flex items-center justify-center gap-2 px-5 py-3 border border-slate-200 hover:bg-slate-50 active:bg-slate-100 disabled:opacity-50 text-slate-700 font-bold text-xs rounded-xl transition-colors duration-150 cursor-pointer"
-            >
-              <Download className="w-4 h-4 shrink-0" />
-              <span>Export</span>
-            </button>
+            {user?.role === 'ADMIN' && (
+              <button
+                onClick={handleExport}
+                disabled={leads.length === 0}
+                className="flex items-center justify-center gap-2 px-5 py-3 border border-slate-200 hover:bg-slate-50 active:bg-slate-100 disabled:opacity-50 text-slate-700 font-bold text-xs rounded-xl transition-colors duration-150 cursor-pointer"
+              >
+                <Download className="w-4 h-4 shrink-0" />
+                <span>Export</span>
+              </button>
+            )}
 
             <button
               onClick={() => {
@@ -398,28 +408,45 @@ export const Dashboard: React.FC = () => {
 
                           {/* Options menu popup */}
                           {actionMenuOpenLeadId === lead.id && (
-                            <div className="absolute right-6 top-12 w-[140px] bg-white border border-slate-100 rounded-xl shadow-lg shadow-slate-200/50 p-1.5 flex flex-col gap-1 z-30 animate-fadeIn text-left">
+                            <div className="absolute right-6 top-8 w-40 bg-white border border-slate-100 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-2 flex flex-col gap-0.5 z-30 animate-fadeIn text-left">
                               <button
                                 onClick={() => {
+                                  setSelectedLead(lead);
+                                  setIsViewModalOpen(true);
+                                  setActionMenuOpenLeadId(null);
+                                }}
+                                className="flex items-center gap-3 w-full px-3 py-2 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition-colors cursor-pointer"
+                              >
+                                <Eye className="w-4 h-4 text-slate-600" />
+                                <span>View Details</span>
+                              </button>
+                              
+                              <button
+                                onClick={() => {
+                                  // @ts-ignore - Handle stale state from HMR where id might be undefined but _id exists
                                   setSelectedLead(lead);
                                   setIsModalOpen(true);
                                   setActionMenuOpenLeadId(null);
                                 }}
-                                className="flex items-center gap-2.5 px-2.5 py-2 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                                className="flex items-center gap-3 w-full px-3 py-2 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg transition-colors cursor-pointer"
                               >
-                                <Edit3 className="w-3.5 h-3.5 text-slate-500" />
+                                <Edit3 className="w-4 h-4 text-slate-600" />
                                 <span>Edit Lead</span>
                               </button>
-                              <button
-                                onClick={() => {
-                                  handleDeleteLead(lead.id);
-                                  setActionMenuOpenLeadId(null);
-                                }}
-                                className="flex items-center gap-2.5 px-2.5 py-2 hover:bg-rose-50 text-rose-600 font-bold text-xs rounded-lg transition-colors cursor-pointer"
-                              >
-                                <Trash2 className="w-3.5 h-3.5 text-rose-500" />
-                                <span>Delete</span>
-                              </button>
+                              
+                              {user?.role === 'ADMIN' && (
+                                <button
+                                  onClick={() => {
+                                    // @ts-ignore - Handle stale state from HMR
+                                    handleDeleteLead(lead.id || lead._id);
+                                    setActionMenuOpenLeadId(null);
+                                  }}
+                                  className="flex items-center gap-3 w-full px-3 py-2 hover:bg-rose-50 text-rose-600 font-semibold text-xs rounded-lg transition-colors cursor-pointer mt-0.5"
+                                >
+                                  <Trash2 className="w-4 h-4 text-rose-500" />
+                                  <span>Delete</span>
+                                </button>
+                              )}
                             </div>
                           )}
                         </div>
@@ -481,6 +508,11 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Add / Edit Lead Modal */}
+      <ViewLeadModal
+        isOpen={isViewModalOpen}
+        onClose={() => setIsViewModalOpen(false)}
+        lead={selectedLead}
+      />
       <LeadModal
         isOpen={isModalOpen}
         onClose={() => {
