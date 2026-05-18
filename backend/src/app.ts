@@ -18,7 +18,7 @@ const app = express();
 // Standard Middlewares
 app.use(
   cors({
-    origin: '*', // Allow all origins for local development
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
@@ -33,9 +33,20 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// Root Route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Smart Leads Backend Running Successfully 🚀',
+  });
+});
+
 // Health check route
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'healthy', timestamp: new Date() });
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date(),
+  });
 });
 
 // Main Router Declarations
