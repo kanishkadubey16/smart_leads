@@ -9,6 +9,8 @@
 **/.env.development
 **/.env.production
 **/.env.test
+.env.backup
+**/.env.backup
 # Keep .env.example files (safe templates)
 !**/.env.example
 
