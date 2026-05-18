@@ -2,6 +2,10 @@
 
 Smart Leads is a modern, production-grade SaaS CRM pipeline manager. Built with a full MERN stack (MongoDB, Express, React, Node.js), it provides robust Role-Based Access Control (RBAC) allowing both Admins and Sales Users to manage leads seamlessly from a unified, internship-ready UI.
 
+### 🌐 Live Project Links
+- **Frontend**: [https://smart-leads-steel-tau.vercel.app/login](https://smart-leads-steel-tau.vercel.app/login)
+- **Backend**: [https://smart-leads-backend-jfzp.onrender.com](https://smart-leads-backend-jfzp.onrender.com)
+
 ## Features
 - **Shared Dashboard Architecture**: A beautiful, minimal SaaS-style UI shared identically between Admins and Sales Users. Restricted actions (like Lead Deletion or CSV Export) are safely hidden for Sales Users while maintaining UI integrity.
 - **Advanced Backend Search & Filtering**: Complex query builder supporting regex search, enum-based status/source filtering, and chronological sorting.
